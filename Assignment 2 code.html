@@ -1,0 +1,185 @@
+<html>
+	<head>
+	<meta charset="UTF-8">
+    	<script>   
+		const validStates = ['Queensland','New South Wales','Victoria','South Australia','Western Australia','Tasmania','Northern Territory','Australian Capital Territory'];
+		const ZERO = 0;
+		const ONE = 1;
+		const MINUS_ONE = -1;
+		const TWO = 2;
+		const ONE_HUNDRED = 100;
+		const THIRTY_MILLION = 3000000;
+		var userInputStates = [];
+		var userStatesCheck = [];
+        var userInput2018 = [];
+		var userInput2019 = [];
+		var differenceCalculation = [];
+		var differncePercentage = [];
+		var i = 0;
+		var ii = 0;
+		var j = 0;
+		var jj = 0;
+		
+		
+		
+		//Take user input and stores it into an array
+		var startUserInput = confirm('Do you want to enter a state?')		
+		var differnceArray = [];
+		while(startUserInput != false)
+		{	
+			
+			userInputStates[i] = prompt("Please enter a valid state, please do not enter a previously entered state")
+			if(userInputStates[i] == "-"){
+			 startUserInput = false}
+			while( validStates.indexOf(userInputStates[i]) == MINUS_ONE || userStatesCheck.indexOf(userInputStates[i]) == ZERO){
+				alert('That is not a valid state or it has been entered already')
+				userInputStates[i] = prompt('Please enter a valid state, please do not enter a previously entered state')
+			};
+			
+			userStatesCheck[i] = userInputStates[i]		
+			i++			
+			 
+			
+			
+			{ 
+			
+			userInput2018[j] = parseInt(prompt('enter a number for 2018'));
+			
+			while(isNaN(userInput2018[j]) || userInput2018[j] < ONE || userInput2018[j] > THIRTY_MILLION){
+				alert('enter a valid number')
+				userInput2018[j] = parseInt(prompt('enter a number for 2018'))
+			 
+			}};
+			j ++
+			
+			{
+			
+			userInput2019[jj] = parseInt(prompt('enter a number for 2019'));
+			while(isNaN(userInput2019[jj]) || userInput2019[jj] < ZERO || userInput2019[j] > THIRTY_MILLION){
+				alert('enter a valid number')
+				userInput2019[jj] = parseInt(prompt('enter a number for 2019'))
+			 
+			}};
+			jj++
+			
+			startUserInput = confirm('Do you want to enter another state?');
+			
+		  };
+		 
+		 
+		
+
+		
+		
+		// works out the differences in births for 2018 and 2019 and the percentage of those differences
+		
+		function birthDifferences(p1,p2){
+			return p2 - p1;
+		};
+		
+			for(i=0; i < userInput2018.length; i++){
+				differnceArray[i] = birthDifferences(userInput2018[i], userInput2019[i]);
+		};
+		
+		
+		function birthDifferencePercentage(p1,p2){
+			p3 = p1 / p2;
+			p4 = p3 * ONE_HUNDRED
+				return p4.toFixed(TWO);
+		};
+			
+		
+			for(i=0; i<differnceArray.length; i++){
+				differncePercentage[i] = birthDifferencePercentage(differnceArray[i],userInput2018[i]);
+		};
+		
+		
+	
+		
+		
+		// worksout what state has the largest increase and the lowest increase
+			
+		var differnceMaxArray = differnceArray;
+			
+		testMax = Math.max.apply(null, differnceMaxArray);
+			
+		var maxIndex = [];
+		
+		for(i=0; i < differnceMaxArray.length; i++){
+			if(differnceMaxArray[i] == testMax){
+			maxIndex[i] = userInputStates[i]
+		}};
+					
+		maxIndex = maxIndex.filter(function () { return true });
+
+				
+		
+			
+		var differnceMinArray = differnceArray;	
+		
+		testMin = Math.min.apply(null, differnceMinArray);
+			
+		var minIndex = [];
+		
+			
+		for(i=0; i < differnceMinArray.length; i++){
+			if(differnceMinArray[i] == testMin){
+			minIndex[i] = userInputStates[i]
+		}};
+					
+		minIndex = minIndex.filter(function () { return true });
+
+				
+		
+		// works out the total births for 2018 and 2019		
+			
+		var total2018 = ZERO;
+		for(i=0; i < userInputStates.length; i++){
+			total2018 += userInput2018[i]
+		};	
+			
+		var total2019 = ZERO;
+		for(i=0; i < userInputStates.length; i++){
+			total2019 += userInput2019[i]
+		};
+		 
+		 
+		 // outputs the table with the user input and the statistics associated
+		 
+			document.writeln('<h1>Australian Birth Registered Calculator</h1>');
+			document.writeln('<hr>');
+			document.writeln('<table border = "1">');
+				document.writeln('<tr>');
+				document.writeln('<th>State/territory</th>');
+				document.writeln('<th>2018</th>');
+				document.writeln('<th>2019</th>');
+				document.writeln('<th>Change from 2018 to 2019 (number)</th>');
+				document.writeln('<th>Change from 2018 to 2019 (%)</th>');
+			document.writeln('</tr>');
+			
+			for(i=0; i < userInput2018.length; i++){
+				document.writeln('<tr>');
+					document.writeln('<td>'+userInputStates[i]+'</td>');
+					document.writeln('<td>'+userInput2018[i]+'</td>');
+					document.writeln('<td>'+userInput2019[i]+'</td>');
+					document.writeln('<td>'+differnceArray[i]+'</td>');
+					document.writeln('<td>'+differncePercentage[i]+'</td>');
+				document.writeln('</tr>');
+			};
+			document.writeln('</table>');
+		
+	
+		
+		document.writeln('<h1>Statistics</h1>');
+		document.writeln('<ol>');
+		document.writeln('<li>The total births registered for the entered stat/territory(s) in 2018 are '+total2018+';</li>');
+		document.writeln('<li>The total births registered for the entered stat/territory(s) in 2019 are '+total2019+';</li>');
+		document.writeln('<li>State/territory with the largest increase or smallest decrease rate: '+maxIndex+';</li>')
+		document.writeln('<li>State/territory with the smallest increase or largest decrease rate: '+minIndex+'.</li>')	
+		document.writeln('</ol>');
+        </script>
+    </head>
+	<body>		
+	</body>
+</html> 
+

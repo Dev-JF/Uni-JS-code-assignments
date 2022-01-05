@@ -1,0 +1,413 @@
+<html>
+	<head>
+	    <title>Shopping Cart System</title>
+    	<meta charset="UTF-8">
+		<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=qoopDuvgSij6dvYCTP-Av24f_P3TU_Vp3-09pDofc06wfwlC6VQg0BjcoshKqPdhS-hAExsqLjZ7hYrwUcswiFEVYrn2am5ovUqaWue0iFmTJ65c_jfg7DNB7aFIuH_GqjYJHcabIqsrdaYRlcOTbHx40LiBesrGPziDuvsR4LniuetbL8ySdhM0a4lVYvJWn9MQ1jJTPtNCgq3sQz2uR8K1-xzEySkSbEO_MHcYja29RlbiJLVeIb9FpBECoElhrzQUMksQkOQ5GVqMU8AdfmmU0CgZISw3IweiBLH4VxJ5kI3tsej1pnX8Rg5CqCwj3b7oxAd1IZd8eQsJOyAKeYZUE3pwE6jAF31UmS15fWPQsTxdgtsNUAObzrbDRr3L6taYAj6MEYcOmzzrCsXLFg" charset="UTF-8"></script><script type="text/javascript" ></script><script>
+			
+		const ZERO = 0;
+		const ONE = 1;
+		const MINUSONE = -1;
+		const TWO = 2;
+		const THREE = 3;
+		const FOUR = 4;
+		const THIRTYNINE = 39;
+		const NINETYNINE = 99;
+		
+		var productListArr = new Array('Salad Server Set', 'Party Serviette Holder', 
+				'Tea Set', 'Mixing Bowl Set', 'Knife Block Set', 'Coffee Capsule Holder', 
+				'Plastic Sensor Soap Pump', 'Storage Bucket', 'Oven Glove', 'Apron', 
+				'Biscuit Barrel', 'Chopping Board', 'Carioca Cups', 'Soup Bowls', 
+				'Elevate Wood Turner', 'Pasta Machine', 'Teapot', 'Cake Pop Scoop', 
+				'Cookbook Stand', 'Chocolate Station', 'Coffee Maker', 'Pepper Mill', 
+				'Salt Mill', 'Glass Storage Jar', 'Measuring jug', 'Kitchen Scale', 
+				'Tenderiser', 'Pizza Docker', 'Knife Sharpener', 'Steel Cork Opener', 
+				'Steel Garlic Press', 'Steel Can Opener', 
+				'Stainless Steel Crank Flour Sifter', 'Mineral Stone Mortar and Pestle', 
+				'Citrus Cather', 'Cherry & Olive Pitter', 'Multi Grater-Detachable', 
+				'Stainless Steel Colander', 'Steel Pizza Pan', 'Pop Container');
+			var priceListArr = new Array(18.70, 11.95, 39.95, 49.95, 99.95, 29.95, 79.95, 24.95, 
+				9.95, 29.95, 39.95, 12.95, 54.95, 43.00, 19.95, 144.95, 29.95, 9.95, 
+				29.95, 34.95, 29.00, 84.94, 84.95, 4.95, 19.95, 39.95, 34.95, 19.95, 
+				79.95, 36.95, 34.95, 36.95, 33.95, 74.95, 19.95, 27.95, 26.95, 44.95, 
+				12.95, 22.95);
+			var shippingArr = ['Pickup', 'Delivery']	
+			
+			
+			
+		//Allows users to add records to the shopping cart	
+		document.writeln('<form>')
+		 document.writeln('<h1>Shopping cart system</h1>')
+		 document.writeln('<p1>Product code</p1>')
+		 document.writeln('<input type="number" id="productCode" name="productcode">')
+		 document.writeln('<p1>Quantity</p1>')
+		 document.writeln('<input type="text" id="quantity" name="quantity"><br>')
+		 document.writeln('<p1>Shipping method</p1>')
+		 document.writeln('<input name="radioTest" type="radio" id="Pickup" value="Pickup" checked />Pick-up')
+		 document.writeln('<input name="radioTest" type="radio" id="Delivery" value="Delivery" />Delivery<br>')
+		 
+		 document.writeln('<input type="button" id= "addShopping" onclick="addRecord(priceListArr,productListArr,shippingArr)" value="Add shopping record">')
+		  document.writeln('<table id="tableList" border = "1">');
+		 document.writeln('<tr>');
+		 document.writeln('<th>Code</th>');
+		 document.writeln('<th>Product</th>');
+		 document.writeln('<th>Price</th>');
+		 document.writeln('<th>Quantity</th>');
+		 document.writeln('<th>Shipping method</th>');
+		 document.writeln('</tr>');   
+		 document.writeln('</table>');
+		 
+		document.writeln('<input type="button" id="total" onclick="recordTotal.value=totalCost(recordCost,recordQuant,recordShip)" value="Total" >')
+		document.writeln('<input type="text" id="recordTotal" value="0"><br>')
+		document.writeln('<br>');					
+		document.writeln('</form>');
+		
+		 
+		// Allows users to search shopping records 
+		document.writeln('<input type="button" id="searchEnter" onclick="searchButton();searchRecords(shoppingRecordArr)" value="Search" >')
+		document.writeln('<input type="text" id="searchText" value=""><br>')
+		document.writeln('<div id="searchForm">');
+		document.writeln('<table id= "searchTable" border = "1">')
+		 document.writeln('<tr>')
+		 document.writeln( '<th>Code</th>')
+		 document.writeln('<th>Product</th>')
+		 document.writeln('<th>Price</th>')
+		 document.writeln('<th>Quantity</th>')
+		 document.writeln('<th>Shipping method</th>')
+		document.writeln( '<tr>')						
+		document.writeln('</table>')		
+		document.writeln( '</div>')
+		document.writeln('<input type="button" id="total" onclick="searchTotal.value = totalCost(searchCost,searchQuant,searchShip)" value="Total" >')
+		document.writeln('<input type="text" id="searchTotal" value="0"><br>')
+		
+				
+		const res = document.getElementById('searchTable').innerHTML 
+		var shoppingRecordArr =  new Array ();
+		
+		var recordCost = [];
+		var recordQuant = [];
+		var recordShip = [];
+		var searchCost = [];
+		var searchQuant = [];
+		var searchShip = [];
+		
+		
+		
+		
+		function showRecords(rec1,rec2,rec3,rec4,rec5){
+				
+			
+				var table = document.getElementById("tableList");
+					
+				var row = table.insertRow(MINUSONE);
+					
+				var cell1 = row.insertCell(ZERO);
+				var cell2 = row.insertCell(ONE);
+				var cell3 = row.insertCell(TWO);
+				var cell4 = row.insertCell(THREE);
+				var cell5 = row.insertCell(FOUR);
+					
+					cell1.innerHTML = rec1;
+					cell2.innerHTML = rec2;
+					cell3.innerHTML = rec3;
+					cell4.innerHTML = rec4;
+					cell5.innerHTML = rec5;
+				
+				
+				
+							
+		}
+		
+		
+		
+		
+		/**
+		*Checks if the product code and quantity entered by the user is valid
+		*
+		*/
+		function isValidQuantity() {
+		
+						
+			var code =  document.getElementById("productCode").value;
+			
+			var quantity = document.getElementById("quantity").value;
+			
+			var floatCodeTest = code % ONE 
+			var floatQuantTest = quantity % ONE
+			
+			if(floatCodeTest == ZERO && floatQuantTest == ZERO && code>=ZERO && code<=THIRTYNINE && quantity>=ZERO && quantity <=NINETYNINE ){
+			
+				return true;
+				
+			}
+				else {
+			
+				alert("Error");	
+			}
+		}	
+			
+		
+		/**
+		*Adds a record to the shoppinRecordArr array
+		*
+		*@param priceList
+		*
+		*@param prodList
+		*
+		*@param priceList
+		*/
+		function addRecord(priceList,prodList,shippingMethod){
+			
+			var shippingMethod=[];
+			var prodCode = document.getElementById("productCode").value;
+			var quantity = document.getElementById("quantity").value;
+			var rec1=[];
+			var rec2=[];
+			var rec3=[];
+			var rec4=[];
+			var rec5=[];
+			
+		  
+			
+			if(isValidQuantity()){
+								
+				rec1 = prodCode;
+				rec2 = prodList[prodCode];
+				rec3 = priceList[prodCode];
+				rec4 = quantity;
+												
+				if(document.getElementById('Pickup').checked){
+					rec5='Pick-up';
+					}else if(document.getElementById('Delivery').checked){
+						rec5='Delivery';
+				}
+				
+				
+				shoppingRecordArr.push(rec1,rec2,rec3,rec4,rec5);
+				recordCost.push(rec3)
+				recordQuant.push(rec4)
+				recordShip.push(rec5)
+				
+				showRecords(rec1,rec2,rec3,rec4,rec5);
+					
+		   } 
+		}
+			
+	
+		
+			
+			
+		
+			
+			
+			
+			
+			
+		/**
+		*Onclick updates the userInput entered in teh search bar
+		*/
+			function searchButton(){
+			 var userInput = document.getElementById('searchText').value
+			
+				return userInput
+			}
+			
+			
+			
+			
+			
+		/**
+		*Searches the shoppingRecordArr to see if the user input matches elements in the array 
+		* and outputs it too a table
+		*
+		*@param shopRec - is used to get the shopping record array
+		*/
+		
+		function searchRecords(shopRec) {
+			
+			var table = document.getElementById("searchTable");
+			var search = document.getElementById("searchForm");
+			var ui = searchButton()
+			var quantSortedSummed = 0;		
+			var prodMatch = []
+			var shipMatch = []
+			var codeMatch = []
+			var quantMatch = []
+			var prod = [];
+			var code = [];
+			var cost = [];
+			var quant = [];
+			var ship = [];
+			var codeSorted = [];
+			var j = 0;	
+				
+			table.innerHTML = res	
+			
+			//Splits the shopRec array into 5 categorised arrays
+			for (let i = 0; i < shopRec.length; i += 5) {
+				
+				chunk = shopRec.slice(i, i + 5);
+				 
+				code[j] = chunk[0]
+				prod[j] = chunk[1]
+				cost[j] = chunk[2]
+				quant[j] = chunk[3]
+				ship[j] = chunk[4]
+				 j++
+				}
+			
+
+			
+			
+			
+
+			//checks if the shopping record matches userinput then sorts it	
+			for (i=0; i< prod.length; i++) {
+				
+				
+				prodName = prod[i];
+				shipType = ship[i]
+				
+				if (prodName.includes(ui) || shipType.includes(ui)) {
+                    prodMatch[i] = prod[i]
+					shipMatch[i] = ship[i]
+					codeMatch[i] = code[i]
+					quantMatch[i] = quant[i]
+					const codeConverted = codeMatch.map(Number);
+					
+					var shippingSorted = sortRecords(codeConverted,shipMatch)
+					var codeSorted = sortRecords(codeConverted,codeConverted)
+                }
+					else{prodMatch[i] = -1}
+			
+			}
+			
+			
+			
+			
+			const codeConverted = codeMatch.map(Number);
+			var quantitySorted = sortRecords(codeConverted,quantMatch)
+			var j = 0;
+			
+			
+			
+			
+			for (i=0; i < prodMatch.length; i++) {
+					
+				if (ui == "") {
+                    alert("Error");
+					
+				} else if( prodMatch[i] != -1){
+					
+				indexCode = codeSorted[i]
+					
+					
+					
+					// prints what matches to a table 
+					
+						
+						var row = table.insertRow(-1);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						var cell4 = row.insertCell(3);
+						var cell5 = row.insertCell(4);			
+						cell1.innerHTML = codeSorted[i];
+						cell2.innerHTML = productListArr[indexCode];
+						cell3.innerHTML = priceListArr[indexCode];
+						
+						cell4.innerHTML = quantitySorted[i];
+						cell5.innerHTML = shippingSorted[i];
+						
+						searchCost[j] = priceListArr[indexCode]
+						searchQuant[j] = quantitySorted[i]
+						searchShip[j] = shippingSorted[i]
+						j++
+					}
+				
+				}	
+				
+				
+				
+		};
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			
+			
+		
+		/**
+		*Uses buble sort to sort the product code from smallest to largest
+		*
+		*@param productCode is the code that gets sorted
+		*
+		*@param otherVar gets sorted based on how the productCode gets sorted
+		*/
+		function sortRecords(arr,otherVar){
+            var i;
+            var j;
+			var productCode = arr;
+            var temp;
+            
+			for (i=0; i<arr.length-1; i++) {
+				for (j=0; j<arr.length-1; j++) {
+                    
+					if (productCode[j]> productCode[j+1]) {
+						temp = otherVar[j];
+                        otherVar[j] = otherVar[j+1];
+                        otherVar[j+1] = temp}
+					if (productCode[j]> productCode[j+1]) {
+						temp = productCode[j];
+                        productCode[j] = productCode[j+1];
+                        productCode[j+1] = temp}
+					
+					
+                            
+				
+                }	}return otherVar}
+			
+			
+		
+		
+		
+		
+		/**
+		*Calculates the total cost of an item based on the params entered
+		* @param price takes the price of an item
+		*
+		* @param quantity takes the quantity of the record
+		*
+		* @param ship checks what shiping type is used
+		*/
+		function totalCost(price, quantity, ship){
+            const ONEHUNDRED = 100;
+			const TEN = 10;
+			var sumWithDelivery = 0;
+			var sumWithPickup= 0;
+			var orderTotal = 0;
+			
+			for (i = 0; i < quantity.length; i++){
+                 if(ship[i] == 'Delivery' && quantity[i] >= 0){
+                    sumWithDelivery +=  price[i] * quantity[i]  + ((price[i] * quantity[i] / ONEHUNDRED) * TEN)
+                 }
+                 if (ship[i] == 'Pick-up' && quantity[i] >= 0) {
+                    sumWithPickup += price[i] * quantity[i]
+                 };
+            orderTotal = sumWithPickup + sumWithDelivery;
+            
+            };return  orderTotal.toFixed(2);
+        };	
+		
+		
+		
+		</script>
+    </head>
+	<body>
+	
+	 
+</html>
